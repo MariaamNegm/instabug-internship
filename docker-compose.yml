@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  db:
+    image: mariamnegm/mysql-internship:latest
+    ports:
+      - ${Host_PORT}:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=MaMa1ghada
+      - Host_PORT=${Host_PORT}
+  app:
+    image: mariamnegm/instabug-internship:latest
+    restart: on-failure
+    ports:
+      - ${PORT}:9090
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - MYSQL_HOST=127.0.0.1
+      - MYSQL_PORT=${MYSQL_PORT}
+      - PORT=${PORT}
+   

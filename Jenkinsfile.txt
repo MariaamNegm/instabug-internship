@@ -1,0 +1,42 @@
+
+pipeline{
+      
+	agent any
+  
+     
+	stages {
+	      stage('gitclone') {
+
+			steps {
+		        	git branch: 'main', url: 'https://github.com/MariaamNegm/instabug-internship.git'
+			}
+    }
+      
+		stage('Build') {
+
+			steps {
+			     
+			      bat ' docker build -t mariamnegm/instabug-internship:latest . '
+			        
+			    }
+			 
+			}
+			
+	 stage('Login') {
+
+			steps {
+		    bat 	 'docker login --username mariamnegm  --password  QueenMGH99'}
+
+		}
+
+		stage('Push') {
+
+			steps {
+				bat 'docker push mariamnegm/instabug-internship:latest '
+			}
+		}
+	 
+	}
+ }
+
+

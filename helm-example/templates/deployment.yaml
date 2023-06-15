@@ -1,0 +1,37 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm-example.fullname" . }}
+  labels:
+    {{- include "helm-example.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  autoscaling:
+    {{- if .Values.autoscaling.enabled }}
+    horizontalPodAutoscaler:
+      minReplicas: {{ .Values.autoscaling.minReplicas }}
+      maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+      targetCPUUtilizationPercentage: {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+  selector:
+    matchLabels:
+      {{- include "helm-example.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm-example.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - name: http
+              containerPort: 9090
+          volumeMounts:
+            - name: my-volume
+              mountPath: /path/to/mount
+      volumes:
+        - name: my-volume
+          persistentVolumeClaim:
+            claimName: {{ include "helm-example.fullname" . }}-pvc

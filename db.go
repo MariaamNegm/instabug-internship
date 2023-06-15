@@ -29,12 +29,12 @@ func init() {
 
 	connection, err := sql.Open("mysql", mysqlConfig.FormatDSN())
 	if err != nil {
-		fmt.Println(err,2222222)
+		fmt.Println(err)
 	}
 
 	_, err = connection.Exec(`CREATE DATABASE IF NOT EXISTS internship`)
 	if err != nil {
-		fmt.Println(err,1111111111)
+		fmt.Println(err)
 	}
 
 	mysqlConfig.DBName = `internship`

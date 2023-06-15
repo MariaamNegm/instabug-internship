@@ -1,0 +1,22 @@
+# values.yaml
+image:
+  repository: mariamnegm/instabug-internship
+  tag: latest
+
+persistence:
+  enabled: true
+  storageClassName: my-storage-class
+  accessMode: ReadWriteOnce
+  size: 10Gi
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 9090
+  
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+
